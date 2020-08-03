@@ -4,20 +4,44 @@
 - name: install package through snap
   snap:
      name:
-           - maas
-           - maas-test-db
+        - maas
+        - maas-test-db
      state: present
      channel: 2.8/stable
 
 - name: install pip3
   apt:
-    name: python3-pip
+    name: 
+      - python3-pip
+      - network-manager
+      - bridge-utils
+      - qemu-kvm
+      - qemu
+      - virt-manager
+      - mlocate
+      - net-tools
     state: present
     update_cache: yes
 
 - name: install pexpect
   pip:
-    name: pexpect
+    name: pexpect\
+
+- name: craete a bridge adapter
+  copy:
+     src: 01-netcfg.yml
+     dest: /etc/netplan/01-netcfg.yml
+
+- name: destroy default adapter
+  command:
+       - virsh net-destroy default
+       - virsh net-undefine default
+
+- name: replace the default adapter
+  command:
+        - virsh net-define maas.xml
+        - virsh net-autostart default
+        - virsh net-start default
 
 - name: initalize the maas
   expect:
