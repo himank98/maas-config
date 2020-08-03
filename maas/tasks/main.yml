@@ -25,12 +25,15 @@
 
 - name: install pexpect
   pip:
-    name: pexpect\
+    name: pexpect
 
 - name: craete a bridge adapter
   copy:
      src: 01-netcfg.yml
      dest: /etc/netplan/01-netcfg.yml
+
+- name: create the adapter
+  command: netplan apply
 
 - name: destroy default adapter
   command:
