@@ -2,7 +2,7 @@
 # vars file for maas
 
 mode: region+rack
-maas_url: 192.168.99.101:5240/MAAS
+maas_url: \n
 username: himank
 password: redhat
 email: a@example.com
