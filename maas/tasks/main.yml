@@ -1,0 +1,44 @@
+---
+# tasks file for maas
+
+- name: install package through snap
+  snap:
+     name:
+           - maas
+           - maas-test-db
+     state: present
+     channel: 2.8/stable
+
+- name: install pip3
+  apt:
+    name: python3-pip
+    state: present
+    update_cache: yes
+
+- name: install pexpect
+  pip:
+    name: pexpect
+
+- name: initalize the maas
+  expect:
+     command: sudo maas init {{ mode }} --database-uri maas-test-db:///
+     responses:
+            "MAAS": "{{ maas_url }}"
+     timeout: 240
+     echo: yes
+
+- name: create admin
+  expect:
+      command: sudo maas createadmin
+      responses:
+            "Username": "{{ username }}"
+            "Password": "{{ password }}"
+            "Again": "{{ password }}"
+            "Email": "{{ email }}"
+            "Import": "\n"
+      echo: yes
+
+- name: login to maas
+  shell: sudo maas login {{ username }} {{ maas_url }} $(maas apikey --username {{ username }} )
+
+
