@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
 
   # MAAS Server
   config.vm.define "maas", primary: true do |maas|
-    maas.vm.box = "generic/ubuntu1804"
+    maas.vm.box = "bento/ubuntu-20.04"
     maas.vm.hostname = "maas"
 
     # Forward MAAS GUI port for easier access
@@ -34,13 +34,7 @@ Vagrant.configure("2") do |config|
       domain.memory = "3500"
     end
 
-    maas.vm.network "private_network", ip: MAAS_IP,
-      :libvirt__netmask => "255.255.255.0",
-      :libvirt__forward_mode => 'nat',
-      :libvirt__network_name => 'OAM',
-      :libvirt__dhcp_enabled => false,
-      :dhcp_enabled => false,
-      :autostart => true
+    maas.vm.network "private_network", ip: MAAS_IP
 
     # Put the SSH key on MAAS node, so that it can control host's virsh to
     # manage power of Cloud Nodes.
