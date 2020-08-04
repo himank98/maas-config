@@ -66,18 +66,6 @@ Vagrant.configure("2") do |config|
     maas.vm.provision :file, 
       :source => './id_rsa', :destination => '/tmp/vagrant/id_rsa'
 
-    # Provision juju client configuration templates
-    maas.vm.provision :file, 
-      :source => './juju/clouds.yaml',
-      :destination => '~vagrant/.local/share/juju/clouds.yaml'
-    maas.vm.provision :file, 
-      :source => './juju/credentials.yaml',
-      :destination => '~vagrant/.local/share/juju/credentials.yaml'
-
-    # Install required packages
-    maas.vm.provision :shell, 
-      :path => './scripts/010-install-packages.sh'
-
     # Configure SSH keys
     maas.vm.provision :shell,
       :path => './scripts/015-configure-ssh-keys.sh'
