@@ -1,2 +1,7 @@
 ---
 # vars file for juju
+mode: region+rack
+maas_url: \n
+username: himank
+password: redhat
+email: a@example.com
