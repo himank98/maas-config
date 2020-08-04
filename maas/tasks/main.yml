@@ -28,6 +28,9 @@
   pip:
     name: pexpect
 
+- name: ssh key generate
+  shell: ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""
+
 - name: craete a bridge adapter
   copy:
      src: 01-netcfg.yml
@@ -79,33 +82,15 @@
 - name: login to maas
   shell: sudo maas login {{ username }} {{ maas_url }} $(maas apikey --username {{ username }} )
 
+- name: import ssh keys
+  shell: maas {{ username }} sshkeys create "key=$(<~/.ssh/id_rsa.pub)"
+
 - name: finding fabric id
   shell: FABRIC_ID=$(maas {{ username }} subnet read 10.20.81.2/24 | grep fabric | cut -d ' ' -f 10 | cut -d "," -f 1)
-
 
 - name: enable dhcp
   shell: maas {{ username }} vlan update $FABRIC_ID untagged dhcp_on=True
 
-- name: install juju
-  shell: snap install juju --classic
-  
-- name: add local cloud
-  expect:
-      command: juju add-cloud --local
-      responses:
-            "Select a cloud type": maas
-            "Enter a name for your maas cloud": maas
-            "Enter the API endpoint url": "{{ maas_url }}"
-      echo: yes 
-      
-- name: maas credentials
-  expect:
-      command: juju add-credential maas
-      responses:
-            "Select region": default
-            "Enter maas-oauth": "$(maas apikey --username {{ username }})"
-      echo: yes
-      
-- name: juju bootstap
-  shell: juju bootstap maas maas-controller
-  
+- name: adding kvm
+  shell: maas {{ username }} pods create type=virsh power_address={{ virsh_address }} power_user={{ username_os }} power_pass={{ pass_os }}
+
