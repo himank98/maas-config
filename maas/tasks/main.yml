@@ -79,8 +79,12 @@
 - name: login to maas
   shell: sudo maas login {{ username }} {{ maas_url }} $(maas apikey --username {{ username }} )
 
+- name: finding fabric id
+  shell: FABRIC_ID=$(maas {{ username }} subnet read 10.20.81.2/24 | grep fabric | cut -d ' ' -f 10 | cut -d "," -f 1)
+
+
 - name: enable dhcp
-  command: sudo maas {{ username }} update fabric fabric-0 | jq ".vlans[0].dhcp_on=true"
+  shell: maas {{ username }} vlan update $FABRIC_ID untagged dhcp_on=True
 
 - name: install juju
   shell: snap install juju --classic
