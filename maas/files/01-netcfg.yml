@@ -13,4 +13,4 @@ network:
     nameservers:  
      addresses: [10.20.81.1]  
     parameters:  
-     stp: false
+     stp: false  

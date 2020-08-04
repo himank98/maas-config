@@ -35,16 +35,26 @@
 - name: create the adapter
   command: netplan apply
 
-- name: destroy default adapter
+- name: destroy the default adapter
   command:
-       - virsh net-destroy default
-       - virsh net-undefine default
+       argv:
+          - sudo virsh net-destroy default
+          - sudo virsh net-undefine default
 
-- name: replace the default adapter
+- name: create the new adapter
   command:
-        - virsh net-define maas.xml
-        - virsh net-autostart default
-        - virsh net-start default
+       argv:
+          - sudo virsh net-define maas.xml
+          - sudo virsh net-autostart default
+          - sudo virsh net-autostart default
+
+- name: create the network pool
+  command:
+       argv:
+          - sudo virsh pool-define-as default dir - - - - "/var/lib/libvirt/images"
+          - sudo virsh pool-autostart default
+          - sudo virsh pool-start default
+
 
 - name: initalize the maas
   expect:
