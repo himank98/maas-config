@@ -10,7 +10,7 @@ HOST_IP = "192.168.1.10"
 CLOUD_NODES_COUNT = 1
 
 # Local image mirror (See https://maas.io/docs/local-image-mirror)
-LOCAL_IMAGE_MIRROR_URL = ""
+#LOCAL_IMAGE_MIRROR_URL = ""
 # LOCAL_IMAGE_MIRROR_URL = "http://192.168.1.100/maas/images/ephemeral-v3/daily/"
 
 # End of Configuration section -------------------------------------------------
@@ -50,11 +50,11 @@ Vagrant.configure("2") do |config|
       "provisioned. Commissioning of the Cloud Nodes is most likely in\n" \
       "progress now.\n\n" \
       "Access MAAS GUI by visiting " \
-      "http://localhost:5240/MAAS\n" \
-      "Username: root\nPassword: root"
+      "http://localhost:5240/MAAS\n" 
+#     "Username: root\nPassword: root"
 	  
 	maas.vm.provision "ansible" do |ansible|
-            ansible.playbook = "maas/playbook_maas.yml"
+            ansible.playbook = "site.yml"
             ansible.extra_vars = {
                 node_ip: HOST_IP,
             }
