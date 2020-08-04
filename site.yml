@@ -1,0 +1,3 @@
+- hosts: maas
+  roles:
+        - maas
