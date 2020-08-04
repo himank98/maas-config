@@ -2,8 +2,10 @@
 # vars file for maas
 
 mode: region+rack
-maas_url: \n
+maas_url: http://10.20.81.2:5240/MAAS
 username: himank
 password: redhat
 email: a@example.com
-
+virsh_address: qemu+ssh://himank@127.0.0.1/system
+username_os: himank
+pass_os: redhat
