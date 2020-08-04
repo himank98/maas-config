@@ -1,2 +1,25 @@
 ---
 # tasks file for juju
+
+- name: install juju
+  shell: snap install juju --classic
+  
+- name: add local cloud
+  expect:
+      command: juju add-cloud --local
+      responses:
+            "Select a cloud type": maas
+            "Enter a name for your maas cloud": maas
+            "Enter the API endpoint url": "{{ maas_url }}"
+      echo: yes 
+      
+- name: maas credentials
+  expect:
+      command: juju add-credential maas
+      responses:
+            "Select region": default
+            "Enter maas-oauth": "$(maas apikey --username {{ username }})"
+      echo: yes
+      
+- name: juju bootstap
+  shell: juju bootstap maas maas-controller
