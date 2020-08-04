@@ -20,6 +20,7 @@
       - virt-manager
       - mlocate
       - net-tools
+      - jq
     state: present
     update_cache: yes
 
@@ -77,6 +78,9 @@
 
 - name: login to maas
   shell: sudo maas login {{ username }} {{ maas_url }} $(maas apikey --username {{ username }} )
+
+- name: enable dhcp
+  command: sudo maas {{ username }} update fabric fabric-0 | jq ".vlans[0].dhcp_on=true"
 
 - name: install juju
   shell: snap install juju --classic
