@@ -91,7 +91,7 @@
   shell: maas {{ username }} sshkeys create "key=$(<~/.ssh/id_rsa.pub)"
 
 - name: finding fabric id
-  shell: FABRIC_ID=$(maas {{ username }} subnet read 10.20.81.2/24 | grep fabric | cut -d ' ' -f 10 | cut -d "," -f 1)
+  shell: FABRIC_ID=$(maas {{ username }} subnet read 10.20.81.2/24 | grep fabric_id | cut -d ' ' -f 10 | cut -d "," -f 1)
 
 - name: enable dhcp
   shell: maas {{ username }} vlan update $FABRIC_ID untagged dhcp_on=True

@@ -6,8 +6,24 @@ HOST_USERNAME = ENV["USER"]
 
 HOST_IP = "192.168.1.10"
 
+OAM_NETWORK_PREFIX = "192.168.10."  # Operation and Maintenance (OAM) network
+FIP_NETWORK_PREFIX = "192.168.11."  # FloatingIP network
+
+MAAS_IP = OAM_NETWORK_PREFIX + "2"
+
+# Operations and Management (OAM) network MAAS DHCP range
+OAM_DYNAMIC_RANGE_START = OAM_NETWORK_PREFIX + "200"
+OAM_DYNAMIC_RANGE_END   = OAM_NETWORK_PREFIX + "254"
+
+# OAM network reserved range (for gateway and MAAS)
+OAM_RESERVED_RANGE_START = OAM_NETWORK_PREFIX + "1"
+OAM_RESERVED_RANGE_END   = OAM_NETWORK_PREFIX + "9"
+
 # Total number of Cloud Nodes
 CLOUD_NODES_COUNT = 1
+
+CLOUD_NODE_CPUS   = 2  
+CLOUD_NODE_MEMORY = 3500
 
 # Local image mirror (See https://maas.io/docs/local-image-mirror)
 #LOCAL_IMAGE_MIRROR_URL = ""
