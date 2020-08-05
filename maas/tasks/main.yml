@@ -37,27 +37,32 @@
      dest: /etc/netplan/01-netcfg.yml
 
 - name: create the adapter
-  command: netplan apply
+  shell: netplan apply
 
-- name: destroy the default adapter
-  command:
-       argv:
-          - sudo virsh net-destroy default
-          - sudo virsh net-undefine default
+- name: create a adpater
+  shell: | 
+     sudo virsh net-destroy default
+     sudo virsh net-undefine default
+  ignore_errors: yes
+
+- name : copy network file maas.xml
+  copy:
+       src: maas.xml
+       dest: ~/maas.xml
 
 - name: create the new adapter
-  command:
-    argv:
-         - sudo virsh net-define maas.xml
-         - sudo virsh net-autostart default
-         - sudo virsh net-autostart default
+  shell: |
+         sudo virsh net-define /root/maas.xml
+         sudo virsh net-autostart default
+         sudo virsh net-autostart default
+  ignore_errors: yes
 
 - name: create the network pool
-  command:
-     argv:
-         - sudo virsh pool-define-as default dir - - - - "/var/lib/libvirt/images"
-         - sudo virsh pool-autostart default
-         - sudo virsh pool-start default
+  shell: |
+         sudo virsh pool-define-as default dir - - - - "/var/lib/libvirt/images"
+         sudo virsh pool-autostart default
+         sudo virsh pool-start default
+  ignore_errors: yes
 
 
 - name: initalize the maas
