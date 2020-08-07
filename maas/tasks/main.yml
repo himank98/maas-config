@@ -37,7 +37,7 @@
      dest: /etc/netplan/01-netcfg.yml
 
 - name: create the adapter
-  shell: netplan apply
+  shell: sudo netplan apply
 
 - name: create a adpater
   shell: | 
@@ -98,4 +98,15 @@
 
 - name: adding kvm
   shell: maas {{ username }} pods create type=virsh power_address={{ virsh_address }} power_user={{ username_os }} power_pass={{ pass_os }}
+
+- name: create machine in maas
+  shell: |
+           maas root machines create \
+           architecture="amd64/generic" \
+           mac_addresses={{ macaddress }} \
+           hostname={{ hostname }} \
+           power_type=virsh power_parameters={"power_address": "{{ virsh_address }}" "power_id":  "node": "01"}
+
+
+
 

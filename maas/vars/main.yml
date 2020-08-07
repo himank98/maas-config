@@ -9,3 +9,5 @@ email: a@example.com
 virsh_address: qemu+ssh://himank@127.0.0.1/system
 username_os: himank
 pass_os: redhat
+hostname: node-01
+macaddress: 0e:00:00:00:00:01
